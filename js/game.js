@@ -1,36 +1,65 @@
-
 var gameProperties = {
     screenWidth: 640,
     screenHeight: 480,
+    
+    tileWidth: 32,
+    tileHeight: 32,
+        
+    boardWidth: 9,
+    boardHeight: 9,
+    
+    totalMines: 10,
 };
 
 var states = {
     game: "game",
 };
 
-var gameState = function(game){
+var graphicAssets = {
+    tiles:{URL:'assets/tiles.png', name:'tiles', frames:14},
+};
 
+var gameState = function(game){
+    this.boardTop;
+    this.boardLeft;
+    this.board;
 };
 
 gameState.prototype = {
-
-    preload: function () {
-      game.load.image('logo', 'phaser.png');
-
+    
+    init: function () {
+        this.boardTop = (gameProperties.screenHeight - (gameProperties.tileHeight * gameProperties.boardHeight)) * 0.5;
+        this.boardLeft = (gameProperties.screenWidth - (gameProperties.tileWidth * gameProperties.boardWidth)) * 0.5;
     },
-
+    
+    preload: function () {
+        game.load.spritesheet(graphicAssets.tiles.name, graphicAssets.tiles.URL, gameProperties.tileWidth, gameProperties.tileHeight, graphicAssets.tiles.frames);
+    },
+    
     create: function () {
-      var logo = game.add.sprite(game.world.centerX, game.world.centerY, 'logo');
-      logo.anchor.setTo(0.5, 0.5);
-
+        this.initBoard();
     },
 
     update: function () {
-
+        
     },
+    
+    initBoard: function () {
+        this.board = new Board(gameProperties.boardWidth, gameProperties.boardHeight);
+		console.log(this.boardLeft)
+        this.board.moveTo(this.boardLeft, this.boardTop);
+    },
+    
+    revealTile: function () {
+        
+    },
+    
+    flagTile: function () {
+        
+    },
+    
 };
 
 var game = new Phaser.Game(gameProperties.screenWidth, gameProperties.screenHeight, Phaser.AUTO, 'gameDiv');
 game.state.add(states.game, gameState);
 game.state.start(states.game);
-
