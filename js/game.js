@@ -17,6 +17,7 @@ var states = {
 
 var graphicAssets = {
     tiles:{URL:'assets/tiles.png', name:'tiles', frames:14},
+	arrows:{URL:'assets/neon_arrow_sign.png', name:'arrows', frames:96}
 };
 
 var gameState = function(game){
