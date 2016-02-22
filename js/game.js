@@ -1,3 +1,8 @@
+/*
+OK So, this is the game file that contains the actual thingy that runs the game.  I'll go into greater detail here later.  Yeah so this is Drew, it's February 22, 2016 (Tony's birthday!!) and this is a work in progress.
+*/
+
+//in gameProperties a number of different 
 var gameProperties = {
     screenWidth: 640,
     screenHeight: 480,
@@ -35,6 +40,7 @@ gameState.prototype = {
     
     preload: function () {
         game.load.spritesheet(graphicAssets.tiles.name, graphicAssets.tiles.URL, gameProperties.tileWidth, gameProperties.tileHeight, graphicAssets.tiles.frames);
+		game.load.spritesheet(graphicAssets.arrows.name, graphicAssets.arrows.URL, gameProperties.tileWidth, gameProperties.tileHeight, graphicAssets.arrows.frames);
     },
     
     create: function () {
