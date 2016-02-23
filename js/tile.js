@@ -23,16 +23,21 @@ var Tile = function (column, row, group) {
 		EPSILON: 3,
 		GAMMA: 4,
 	}
-    
+    this.cursors = null;
     this.column = column;
     this.row = row;
     this.x = column * gameProperties.tileWidth;
     this.y = row * gameProperties.tileHeight;
+	this.arrowButton = null;
     
     var tile = this;
     var currentState = this.states.DEFAULT;
-    var currentValue = 0;
+    var currentValue = 9;
+	var currentArrow = this.arrowstates.BETA
     var sprite = game.add.sprite(this.x, this.y, graphicAssets.tiles.name, currentState, group);
+    var sprite2 = game.add.sprite(this.x, this.y, graphicAssets.arrows.name, currentArrow, group);
+	
+
 	    
     var init = function () {
 		sprite.inputEnabled = true;
@@ -40,6 +45,9 @@ var Tile = function (column, row, group) {
         sprite.events.onInputOut.add(rollOut, this);
         sprite.events.onInputOver.add(rollOver, this);
         sprite.events.onInputDown.add(click, this);
+		sprite2.visible = false;
+ //       this.cursors = this.input.keyboard.createCursorKeys();
+	//	this.arrowButton = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     };
     
     var rollOver = function () {
@@ -59,8 +67,13 @@ var Tile = function (column, row, group) {
     }
     
     this.reveal = function () {
-        sprite.animations.frame = currentValue;
-        sprite.inputEnabled = false;
+		if (this.getValue() == 9){
+			this.setValue(0);
+		}else{
+			this.setValue(9);
+		}
+		sprite.animations.frame = currentValue;	
+        //sprite.inputEnabled = false;
     };
 	
 	this.setValue = function (value) {
@@ -75,5 +88,14 @@ var Tile = function (column, row, group) {
 /*    
 	var sprite = game.add.sprite(this.x, this.y, graphicAssets.tiles.name, currentState, group);
     var sprite = game.add.sprite(column * gameProperties.tileWidth, row * gameProperties.tileHeight, graphicAssets.tiles.name, currentFrame, group);
+	 if (this.game.input.mouse.button != -1 || this.fomerMouse > -1) {
+		 if(this.game.input.mouse.button<0 && this.fomerMouse ==2) {
+			 console.log('destroySensor();');            
+			 } else {                
+				if (this.game.input.mouse.button == 2 && this.fomerMouse != this.game.input.mouse.button) {
+                    console.log('shootSensor();');                
+					} else if (this.game.input.mouse.button == 0 && this.fomerMouse !=this.game.input.mouse.button) {                    	
+						console.log('shootFireball();');                
+						}             }            this.fomerMouse = this.game.input.mouse.button;        }
   */  
 };
