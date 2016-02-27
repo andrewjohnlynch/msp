@@ -17,11 +17,10 @@ var Tile = function (column, row, group) {
         MINE: 13,
     };
 	this.arrowstates = {
-		ALPHA: 0,
-		BETA: 1,
-		DELTA: 2,
-		EPSILON: 3,
-		GAMMA: 4,
+		DOWN: 0,
+		LEFT: 12,
+		RIGHT: 24,
+		UP: 36,
 	}
     this.cursors = null;
     this.column = column;
@@ -31,9 +30,9 @@ var Tile = function (column, row, group) {
 	this.arrowButton = null;
     
     var tile = this;
-    var currentState = this.states.DEFAULT;
+    var currentState = this.states.ZERO;
     var currentValue = 9;
-	var currentArrow = this.arrowstates.BETA
+	var currentArrow = this.arrowstates.UP
     var sprite = game.add.sprite(this.x, this.y, graphicAssets.tiles.name, currentState, group);
     var sprite2 = game.add.sprite(this.x, this.y, graphicAssets.arrows.name, currentArrow, group);
 	
@@ -54,12 +53,18 @@ var Tile = function (column, row, group) {
 		var tween = game.add.tween(sprite);
         tween.to({x:tile.x-3, y:tile.y-3}, 100, Phaser.Easing.Exponential.easeOut);
         tween.start();
+		var tween2 = game.add.tween(sprite2);
+        tween2.to({x:tile.x-3, y:tile.y-3}, 100, Phaser.Easing.Exponential.easeOut);
+        tween2.start();
     };
     
     var rollOut = function () {
         var tween = game.add.tween(sprite);
         tween.to({x:tile.x, y:tile.y}, 100, Phaser.Easing.Exponential.easeOut);
         tween.start();
+		var tween2 = game.add.tween(sprite2);
+        tween2.to({x:tile.x, y:tile.y}, 100, Phaser.Easing.Exponential.easeOut);
+        tween2.start();
     }
     
     var click = function () {
@@ -67,21 +72,37 @@ var Tile = function (column, row, group) {
     }
     
     this.reveal = function () {
-		if (this.getValue() == 9){
-			this.setValue(0);
-		}else{
-			this.setValue(9);
+		if (!sprite2.visible){
+			sprite2.visible = true;
+			this.setValue(this.arrowstates.UP);
+		}else if(this.getValue() == this.arrowstates.UP){
+			this.setValue(this.arrowstates.RIGHT);
+		}else if(this.getValue() == this.arrowstates.RIGHT){
+			this.setValue(this.arrowstates.DOWN);
+		}else if(this.getValue() == this.arrowstates.DOWN){
+			this.setValue(this.arrowstates.LEFT);
+		}else if(this.getValue() == this.arrowstates.LEFT){
+			sprite2.visible = false;
 		}
-		sprite.animations.frame = currentValue;	
+		sprite2.animations.frame = currentArrow;
+
+	/*	
+		if (this.getValue() == this.arrowstates.UP){
+			this.setValue(this.arrowstates.DOWN);
+		}else{
+			this.setValue(this.arrowstates.UP);
+		}
+		sprite2.animations.frame = currentArrow;
+		*/
         //sprite.inputEnabled = false;
     };
 	
 	this.setValue = function (value) {
-        currentValue = value;
+        currentArrow = value;
     };
     
     this.getValue = function () {
-        return currentValue;
+        return currentArrow;
     };
     
     init();
